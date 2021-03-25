@@ -308,8 +308,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 790c36b7148a8a94682fd504df25d2e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  material: {fileID: 2100000, guid: 55693ab5808f49646aff3dae7947c4d0, type: 2}
+  mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
   computeShader: {fileID: 7200000, guid: e35e5cea2af074049b0995b2b291f08e, type: 3}
-  resolution: 200
+  resolution: 1000
   function: 4
   transitionMode: 0
   functionDuration: 1
