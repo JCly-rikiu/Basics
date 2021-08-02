@@ -22,22 +22,25 @@ public class Fractal : MonoBehaviour
     Gradient gradientA, gradientB;
     [SerializeField]
     Color leafColorA, leafColorB;
+    [SerializeField]
+    float maxSagAngleA = 15f, maxSagAngleB = 25f;
 
-    static float3[] directions = {
-        up(), right(), left(), forward(), back()
-    };
     static quaternion[] rotations = {
         quaternion.identity, quaternion.RotateZ(-0.5f * PI), quaternion.RotateZ(0.5f * PI), quaternion.RotateX(0.5f * PI), quaternion.RotateX(-0.5f * PI)
     };
 
     struct FractalPart
     {
-        public float3 direction, worldPosition;
+        public float3 worldPosition;
         public quaternion rotation, worldRotation;
-        public float spinAngle;
+        public float maxSagAngle, spinAngle;
     }
     NativeArray<FractalPart>[] parts;
-    FractalPart CreatePart(int childIndex) => new FractalPart { direction = directions[childIndex], rotation = rotations[childIndex] };
+    FractalPart CreatePart(int childIndex) => new FractalPart
+    {
+        maxSagAngle = radians(Random.Range(maxSagAngleA, maxSagAngleB)),
+        rotation = rotations[childIndex]
+    };
 
     NativeArray<float3x4>[] matrices;
     ComputeBuffer[] matricesBuffers;
@@ -67,8 +70,24 @@ public class Fractal : MonoBehaviour
             FractalPart parent = parents[i / 5];
             FractalPart part = parts[i];
             part.spinAngle += spinAngleDelta;
-            part.worldRotation = mul(parent.worldRotation, mul(part.rotation, quaternion.RotateY(part.spinAngle)));
-            part.worldPosition = parent.worldPosition + mul(parent.worldRotation, (1.5f * scale * part.direction));
+
+            float3 upAxis = mul(mul(parent.worldRotation, part.rotation), up());
+            float3 sagAxis = cross(up(), upAxis);
+            float sagMagnitude = length(sagAxis);
+            quaternion baseRotation;
+            if (sagMagnitude > 0f)
+            {
+                sagAxis /= sagMagnitude;
+                quaternion sagRotation = quaternion.AxisAngle(sagAxis, part.maxSagAngle * sagMagnitude);
+                baseRotation = mul(sagRotation, parent.worldRotation);
+            }
+            else
+            {
+                baseRotation = parent.worldRotation;
+            }
+
+            part.worldRotation = mul(baseRotation, mul(part.rotation, quaternion.RotateY(part.spinAngle)));
+            part.worldPosition = parent.worldPosition + mul(part.worldRotation, float3(0f, 1.5f * scale, 0f));
             parts[i] = part;
             float3x3 r = float3x3(part.worldRotation) * scale;
             matrices[i] = float3x4(r.c0, r.c1, r.c2, part.worldPosition);
