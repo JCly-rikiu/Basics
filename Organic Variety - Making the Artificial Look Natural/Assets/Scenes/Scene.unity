@@ -261,11 +261,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   depth: 7
   mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  leafMesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
   material: {fileID: 2100000, guid: 4f5a3e155fbb9b14daa01b3f31ce1062, type: 2}
   gradientA:
     serializedVersion: 2
-    key0: {r: 1, g: 1, b: 1, a: 1}
-    key1: {r: 1, g: 0, b: 0, a: 1}
+    key0: {r: 1, g: 1, b: 1, a: 0.3137255}
+    key1: {r: 1, g: 0, b: 0, a: 0.3529412}
     key2: {r: 0, g: 0, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
@@ -293,8 +294,8 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   gradientB:
     serializedVersion: 2
-    key0: {r: 0, g: 0, b: 1, a: 1}
-    key1: {r: 1, g: 1, b: 1, a: 1}
+    key0: {r: 0, g: 0, b: 1, a: 0.54901963}
+    key1: {r: 1, g: 1, b: 1, a: 0.627451}
     key2: {r: 1, g: 1, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
@@ -320,6 +321,8 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 3
     m_NumAlphaKeys: 2
+  leafColorA: {r: 0.29249704, g: 0.7169812, b: 0.19886081, a: 0.5019608}
+  leafColorB: {r: 0.47607255, g: 0.0944108, b: 0.49056602, a: 0.9019608}
 --- !u!1 &671435589
 GameObject:
   m_ObjectHideFlags: 0
